@@ -1,0 +1,13 @@
+weights/*.pt
+*.pt
+weights/
+*/__pycache__
+*/runs
+*/.idea
+*/weights
+idea/
+idea/*.*
+__pycache__/
+__pycache__/*.*
+
+/.idea/
