@@ -55,7 +55,31 @@ def upload():
     return render_template('detectOut.html', img=image_info)
 
 
+@app.route('/detect/imageDetect', methods=['post'])
+def process():
+    # step 1. receive image url
+    image_link = request.form.get("imageLink")
+
+    if not image_link.strip():
+        return "error"  # check request
+
+    response = req.get(image_link)
+    image = Image.open(BytesIO(response.content))
+
+    # step 2. detect image
+    image_array = service.detect(image)
+
+    # step 3. convert image_array to byte_array
+    img = Image.fromarray(image_array, 'RGB')
+    img_byte_array = io.BytesIO()
+    img.save(img_byte_array, format='JPEG')
+
+    # step 4. return image_info to page
+    image_info = base64.b64encode(img_byte_array.getvalue()).decode('ascii')
+    return image_info
+
+
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.run(debug=False, port=8080)
+    app.run(debug=False, port=8081)
