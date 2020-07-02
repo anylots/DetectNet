@@ -31,8 +31,8 @@ def upload():
     if image_link:
         response = req.get(image_link)
         image = Image.open(BytesIO(response.content))
-    # else:
-    # image = base64.b64decode(file)
+    else:
+        image = Image.open(BytesIO(base64.b64decode(file)))
 
     # step 2. detect image
     image_array = service.detect(image)
